@@ -1,7 +1,7 @@
 # Registering a `*.fluxcast.dev` subdomain
 
 You get a free `yourname.fluxcast.dev` subdomain by opening a pull request that
-adds **one JSON file**. That's it.
+adds **one JSON file**. No account, no dashboard, no cost.
 
 ## Steps
 
@@ -10,9 +10,8 @@ adds **one JSON file**. That's it.
    your subdomain: `domains/coolproject.json` → `coolproject.fluxcast.dev`.
 3. Fill it in (see below), commit, and open a pull request.
 4. Automated checks run on your PR. If they fail, read the error, fix it, and
-   push again.
-5. A maintainer reviews and merges. Your DNS records go live within a few
-   minutes.
+   push again — the checks re-run automatically.
+5. A maintainer reviews and merges. Your DNS goes live within a few minutes.
 
 ## File format
 
@@ -28,34 +27,89 @@ adds **one JSON file**. That's it.
 }
 ```
 
-- `owner.username` **must** match your GitHub username (this is how ownership is
-  enforced: you can only edit your own files).
-- `owner.email` is optional but recommended for contact.
-- `records` holds your DNS records.
+- `owner.username` **must** match your GitHub username (case-insensitive). This
+  is how ownership is enforced: you can only add, edit, or delete your own files.
+- `owner.email` is **optional**. ⚠️ Anything in this file is committed to a
+  **public** repository, so an email here is publicly visible in git. It is
+  stripped from the public raw API, but not from git history — omit it or use a
+  throwaway if you care.
+- `records` holds your DNS records (at least one).
 
-### Supported records
+## Naming rules
+
+- **Lowercase only**, ASCII letters, digits and hyphens.
+- **No consecutive hyphens** (`--`).
+- Root subdomains **can't start with** `_`.
+- **Reserved / internal** names are off-limits (see
+  [`util/reserved.json`](util/reserved.json) and
+  [`util/internal.json`](util/internal.json)).
+- **One** single-character subdomain (e.g. `x.fluxcast.dev`) per user.
+
+## Supported records
 
 | Type    | Shape                                                              |
 | ------- | ----------------------------------------------------------------- |
-| `A`     | `["1.2.3.4"]`, array of public IPv4                               |
-| `AAAA`  | `["2606:..."]`, array of public IPv6                             |
-| `CNAME` | `"target.example.com"`, a single hostname (alone, unless proxied)  |
+| `A`     | `["1.2.3.4"]`, array of **public** IPv4                            |
+| `AAAA`  | `["2606:..."]`, array of **public** IPv6                          |
+| `CNAME` | `"target.example.com"`, a single hostname (alone, unless proxied) |
 | `MX`    | `[{"target": "mx.example.com", "priority": 10}]`                  |
-| `NS`    | `["ns1.example.com"]`, delegates a subdomain                       |
-| `TXT`   | `"value"` or `["v1", "v2"]`                                        |
+| `NS`    | `["ns1.example.com"]`, delegate DNS for the subdomain             |
+| `TXT`   | `"value"` or `["v1", "v2"]`                                       |
 | `URL`   | `"https://example.com"`, HTTP redirect (proxied)                 |
 | `CAA` / `SRV` / `DS` / `TLSA` | advanced records, see examples in `domains/` |
 
-### Options
+### Record rules
+
+- `A` / `AAAA` must be **public** IPs — private/local ranges (`10.x`,
+  `192.168.x`, `127.x`, `169.254.x`, etc.) are rejected.
+- `CNAME` must be the **only** record, unless the domain is proxied.
+- `NS` may only be combined with `DS`; `URL` can't be combined with
+  `A`/`AAAA`/`CNAME`.
+- `CNAME` can't point to Cloudflare tunnels or workers
+  (`*.workers.dev`, `*.trycloudflare.com`, `*.cfargotunnel.com`).
+- **No wildcards** — `*.yourname.fluxcast.dev` is not supported.
+
+## Options
 
 - `"proxied": true` routes through Cloudflare (free SSL, DDoS protection, hides
   your origin IP). Requires an `A`, `AAAA`, or `CNAME` record.
 - `"redirect_config"` sets custom redirect paths (requires a `URL` record or proxy).
 
-### Nested subdomains
+## HTTPS
+
+You get HTTPS automatically: via Cloudflare when `proxied`, or from your host
+(e.g. GitHub Pages, Netlify, Vercel) when it isn't.
+
+## Nested subdomains
 
 `blog.coolproject.fluxcast.dev` → `domains/blog.coolproject.json`. The parent
 (`coolproject.json`) must already exist and be owned by you.
+
+## Managing your subdomain
+
+- **Update:** edit your JSON file and open a PR.
+- **Delete:** remove your JSON file and open a PR.
+- **Transfer** to another user: open an issue — a maintainer handles ownership
+  changes.
+
+## What's allowed
+
+**Any lawful website** — a personal page, portfolio, project, blog, docs, demo,
+or commercial site. We don't gate on topic, "completeness", or commercial use.
+Build what you want.
+
+## What's NOT allowed
+
+- Phishing, scams, impersonation, or brand-squatting.
+- Malware, spyware, or command-and-control infrastructure.
+- Illegal content or activity under applicable law.
+- Spam, link farms, or SEO manipulation.
+- Harassment, threats, or content that endangers others.
+- Sexual content involving minors (reported to authorities immediately).
+- Using the subdomain to relay or anonymize abuse.
+
+Breaking these gets the subdomain removed and may get you blocked. See the
+[Terms of Service](TERMS_OF_SERVICE.md).
 
 ## Test locally before opening a PR
 
@@ -64,9 +118,14 @@ pip install -e ".[dev]"
 pytest -q
 ```
 
-## Rules
+## FAQ
 
-- One subdomain per project; don't hoard.
-- Only **one** single-character subdomain per user.
-- Reserved and internal names (see `util/`) are off-limits.
-- No malware, phishing, or illegal content. See the [Terms of Service](TERMS_OF_SERVICE.md).
+- **How long until it's live?** A few minutes / hours after your PR is merged.
+- **Is my email public?** Yes, if you include it — the file lives in a public
+  repo. It's stripped from the raw API only. Omit it or use a throwaway.
+- **Do I get HTTPS?** Yes (see above).
+- **Can I get a wildcard (`*.name`)?** No.
+- **How many subdomains can I have?** No hard limit, but don't hoard =].
+- **Can I point to GitHub Pages / Netlify / Vercel?** Yes, with a `CNAME`.
+- **Can I run my own nameservers?** Yes, with `NS` records (delegation).
+- **Lost access, or need to transfer ownership?** Open an issue.

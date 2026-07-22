@@ -1,16 +1,17 @@
 # Terms of Service
 
-_Last updated: 2026-07-21_
+_Last updated: 2026-07-23_
 
-`fluxcast.dev` offers free `*.fluxcast.dev` subdomains to developers as a
-community service, provided by the fluxcast project. By requesting or using a
-subdomain you agree to these terms.
+`fluxcast.dev` offers free `*.fluxcast.dev` subdomains to anyone, as a community
+service by the fluxcast project. By requesting or using a subdomain you agree to
+these terms.
 
 ## 1. Eligibility & acceptable use
 
-Subdomains are for **genuine software / technology / open-source projects**:
-portfolios, project sites, docs, demos, tools, and similar. Your site must be
-reachable and be more than an unmodified template or placeholder.
+You may request a subdomain for **any lawful website**: a personal page,
+portfolio, project, blog, docs, demo, or commercial site. We do **not** require
+your site to be "developer-related", finished, or non-commercial. The bar is
+intentionally low; the only hard limits are the prohibited uses in section 2.
 
 ## 2. Prohibited use
 

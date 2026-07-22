@@ -1,5 +1,6 @@
-<img src="https://fluxcast.secweb.cloud/flcast_logo_512x512.png" width="150" 
-style="display: block; margin: 0 auto;">
+<p align="center">
+   <img src="https://fluxcast.secweb.cloud/flcast_logo_512x512.png" width="150" alt="fluxcast logo">
+</p>
 
 <h1 align="center">fluxcast.dev subdomains</h1>
 
@@ -9,9 +10,10 @@ style="display: block; margin: 0 auto;">
 </p>
 
 <p align="center">
-   <img alt="Domains" src="https://img.shields.io/github/directory-file-count/IlyaP358/fluxcast_domains/domains?color=6c47ff&label=domains&style=for-the-badge">
-   <img alt="Pull Requests" src="https://img.shields.io/github/issues-pr-raw/IlyaP358/fluxcast_domains?color=6c47ff&label=pull%20requests&style=for-the-badge">
-   <img alt="Issues" src="https://img.shields.io/github/issues-raw/IlyaP358/fluxcast_domains?color=6c47ff&label=issues&style=for-the-badge">
+   <img alt="Domains" src="https://img.shields.io/github/directory-file-count/IlyaP358/fluxcast-domains/domains?color=2e8b57&label=domains&style=for-the-badge">
+   <img alt="Pull Requests" src="https://img.shields.io/github/issues-pr-raw/IlyaP358/fluxcast-domains?color=2e8b57&label=pull%20requests&style=for-the-badge">
+   <img alt="Issues" src="https://img.shields.io/github/issues-raw/IlyaP358/fluxcast-domains?color=2e8b57&label=issues&style=for-the-badge">
+   <img alt="Stars" src="https://img.shields.io/github/stars/IlyaP358/fluxcast-domains?color=2e8b57&style=for-the-badge">
 </p>
 
 ---
@@ -92,6 +94,15 @@ Publishing (in CI) needs two secrets:
 Found a `*.fluxcast.dev` subdomain being misused? Open a
 [report-abuse issue](../../issues/new?labels=report-abuse&template=report-abuse.md).
 See the [Terms of Service](TERMS_OF_SERVICE.md).
+
+## Support the project
+
+This service is free and runs on volunteer time. If it is useful to you:
+
+- ⭐ **Star this repo** — it genuinely helps more developers find the service.
+- ☕ **[Buy me a coffee on Ko-fi](https://ko-fi.com/fluxcast)** =] — covers the domain and keeps the lights on.
+
+Every star and coffee is appreciated. Thank you!
 
 ## License
 

@@ -1,0 +1,45 @@
+name: Raw API
+
+on:
+    push:
+        branches: [main]
+        paths:
+            - "domains/**"
+            - "util/reserved.json"
+            - "util/internal.json"
+            - "src/**"
+            - ".github/workflows/raw-api.yml"
+
+    workflow_dispatch:
+
+concurrency:
+    group: ${{ github.ref }}-raw-api
+    cancel-in-progress: true
+
+# Publishes raw-api/v2.json to the gh-pages branch, served at raw.fluxcast.dev.
+permissions:
+    contents: write
+
+jobs:
+    update:
+        name: Update
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-python@v5
+              with:
+                  python-version: "3.12"
+
+            - name: Install
+              run: pip install -e .
+
+            - name: Generate v2.json
+              run: fluxcast-raw-api
+
+            - name: Deploy to gh-pages
+              uses: peaceiris/actions-gh-pages@v4
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./raw-api
+                  cname: raw.fluxcast.dev

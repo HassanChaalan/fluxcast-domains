@@ -1,0 +1,12 @@
+# Default owner for everything.
+* @IlyaP358
+
+# Domain files are reviewed by maintainers.
+/domains/ @IlyaP358
+
+# Critical files require the owner's explicit review.
+/util/reserved.json @IlyaP358
+/util/internal.json @IlyaP358
+/util/trusted.json @IlyaP358
+/src/ @IlyaP358
+TERMS_OF_SERVICE.md @IlyaP358

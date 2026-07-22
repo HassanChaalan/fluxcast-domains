@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+    - name: Register a subdomain
+      url: https://github.com/IlyaP358/fluxcast_domains/blob/main/CONTRIBUTING.md
+      about: Registration is done via pull request — see the guide, not an issue.

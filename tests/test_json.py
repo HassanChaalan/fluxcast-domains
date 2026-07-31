@@ -11,6 +11,7 @@ from fluxcast_domains.validation import validate_filename, validate_structure
 from conftest import DOMAIN_FILES, SUBDOMAINS
 
 ALLOWED_ROOT_JSON = {"package.json", "package-lock.json"}
+ALLOWED_NON_JSON_DOMAIN_FILES = {"example.md"}
 
 
 def test_no_json_files_in_repo_root():
@@ -20,6 +21,19 @@ def test_no_json_files_in_repo_root():
         if p.name not in ALLOWED_ROOT_JSON
     ]
     assert not stray, f"JSON files must live in domains/, not the repo root: {stray}"
+
+
+def test_all_domain_files_have_json_extension():
+    if not DOMAINS_DIR.is_dir():
+        return
+    stray = [
+        p.name
+        for p in DOMAINS_DIR.iterdir()
+        if p.is_file()
+        and p.name not in ALLOWED_NON_JSON_DOMAIN_FILES
+        and not p.name.endswith(".json")
+    ]
+    assert not stray, f"Files in domains/ must have a .json extension: {stray}"
 
 
 @pytest.mark.parametrize("path", DOMAIN_FILES, ids=SUBDOMAINS or ["<none>"])

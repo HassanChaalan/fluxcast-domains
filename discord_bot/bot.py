@@ -16,17 +16,16 @@ if not TOKEN:
 
 GITHUB_REPO = "IlyaP358/fluxcast-domains"
 
-EMOJI_OPEN = "<:pr_open:123456789012345678>"
-EMOJI_MERGED = "<:pr_merged:123456789012345678>"
-EMOJI_CLOSED = "<:pr_closed:123456789012345678>"
-EMOJI_DRAFT = "<:pr_draft:123456789012345678>"
+EMOJI_OPEN = "<:pr_open:1534330402657796116>"
+EMOJI_MERGED = "<:pr_merged:1534330404029468774>"
+EMOJI_CLOSED = "<:pr_closed:1534330406890115093>"
+EMOJI_DRAFT = "<:pr_draft:1534330405484757042>"
 
 humanize.i18n.activate("en_US")
 
-
-
 intents = discord.Intents.default()
 intents.message_content = True
+
 
 class GitHubBot(commands.Bot):
     def __init__(self, *args, **kwargs):
@@ -40,12 +39,16 @@ class GitHubBot(commands.Bot):
         if self.session:
             await self.session.close()
         await super().close()
+
 bot = GitHubBot(command_prefix="!", intents=intents)
 
 
 @bot.event
 async def on_message(message):
     if message.author.bot:
+        return
+
+    if message.channel.name != "pull-requests-check":
         return
 
     match = re.search(r"#+(\d+)", message.content)
@@ -82,26 +85,28 @@ async def on_message(message):
                     status_text = "Opened"
                     color = 0x2DA44E
 
-                created_at = datetime.datetime.fromisoformat(pr["created_at"].replace("Z", "+00:00"))
-
-                time_ago = humanize.naturaltime(created_at, 
-                                                when=datetime.datetime.now(datetime.timezone.utc))
+                created_at = datetime.datetime.fromisoformat(
+                    pr["created_at"].replace("Z", "+00:00")
+                )
+                time_ago = humanize.naturaltime(
+                    created_at, when=datetime.datetime.now(datetime.timezone.utc)
+                )
 
                 embed = discord.Embed(
-                        title=pr["title"], url=pr["html_url"], color=color
-                    )
+                    title=pr["title"], url=pr["html_url"], color=color
+                )
 
                 embed.set_author(
-                        name=pr["user"]["login"],
-                        icon_url=pr["user"]["avatar_url"],
-                        url=pr["user"]["html_url"],
-                    )
+                    name=pr["user"]["login"],
+                    icon_url=pr["user"]["avatar_url"],
+                    url=pr["user"]["html_url"],
+                )
 
                 embed.add_field(
-                        name="Status",
-                        value=f"{status_icon} {status_text} `{time_ago}`",
-                        inline=False,
-                    )
+                    name="Status",
+                    value=f"{status_icon} {status_text} `{time_ago}`",
+                    inline=False,
+                )
 
                 await message.reply(embed=embed, mention_author=True)
 
